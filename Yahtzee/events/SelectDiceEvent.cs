@@ -12,8 +12,8 @@ namespace Yahtzee.events
         public static void dice_Click(object sender, EventArgs e, YahtzeeFrom form)
         {
             Label clickedDieLabel = (Label) sender;
-            Table gameTable = form.Game.GameTable;
-            Hand gameHand = form.Game.GameHand;
+            Table gameTable = form.Game.CurrentTurn.TurnTable;
+            Hand gameHand = form.Game.CurrentTurn.TurnHand;
             
             if (gameHand.GetDiceCount() < 5)
             {

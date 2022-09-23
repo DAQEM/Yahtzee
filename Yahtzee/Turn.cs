@@ -4,8 +4,8 @@
     {
         public Player Player { get; }
         public int RollNumber { get; set; }
-        private Hand TurnHand;
-        private Table TurnTable;
+        public Hand TurnHand;
+        public Table TurnTable;
         
         public Turn(Player player, int roll)
         {

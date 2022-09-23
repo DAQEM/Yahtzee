@@ -9,8 +9,6 @@ namespace Yahtzee
         public YahtzeeFrom YFrom;
         public readonly List<Player> Players = new List<Player>();
         public Turn CurrentTurn;
-        public readonly  Table GameTable;
-        public readonly Hand GameHand;
         
         public Game(List<string> playerNames)
         {
@@ -22,9 +20,6 @@ namespace Yahtzee
             
             //Set first turn for Player 1
             this.CurrentTurn = new Turn(Players[0], Constants.BeginRollNumber);
-
-            this.GameTable = new Table();
-            this.GameHand = new Hand();
         }
 
         private void AddPlayer(string playerName)

@@ -12,21 +12,24 @@ namespace Yahtzee.events
         {
             Game game = form.Game;
             Turn currentTurn = game.CurrentTurn;
+            Table currentTable = currentTurn.TurnTable;
+            Hand currentHand = currentTurn.TurnHand;
+            
             //Perform next roll if the player isn't out of rolls.
             if (currentTurn.RollNumber != Constants.LastRollNumber)
             {
                 currentTurn.RollNumber += 1;
                 
                 //Clear current dice if present
-                if (game.GameTable.GetDiceCount() > 0)
+                if (currentTable.GetDiceCount() > 0)
                 {
-                    game.GameTable.Clear();
+                    currentTable.Clear();
                 }
                 
                 //Add dice to the table.
-                for (int diceCount = 0; diceCount < Constants.MaxDice - game.GameHand.GetDiceCount(); diceCount++)
+                for (int diceCount = 0; diceCount < Constants.MaxDice - currentHand.GetDiceCount(); diceCount++)
                 {
-                    game.GameTable.AddDie(new Die(form, game.GameTable.GetAvailableDictionaryKey()));
+                    currentTable.AddDie(new Die(form, currentTable.GetAvailableDictionaryKey()));
                 }
 
                 //Set rolls left on screen.
