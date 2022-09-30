@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Yahtzee
@@ -12,6 +13,9 @@ namespace Yahtzee
             InitializeComponent();
         }
 
+        /// <summary>The event fired when the game start button is clicked</summary>
+        /// <param name="sender">The button clicked.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void startButton_Click(object sender, EventArgs e)
         {
             List<string> playerNames = new List<string>();
@@ -23,7 +27,7 @@ namespace Yahtzee
                     {
                         if (textBox.Name == "textBoxPlayer" + i)
                         {
-                            if (textBox.Text != string.Empty && textBox.Text != "Enter name...")
+                            if (textBox.Text != string.Empty && textBox.Text != Constants.EnterNameText)
                             {
                                 playerNames.Add(textBox.Text);
                                 break;
@@ -32,27 +36,40 @@ namespace Yahtzee
                     }
                 }
             }
-            YahtzeeFrom yahtzeeFrom = new YahtzeeFrom(new Game(playerNames));
-            this.Hide();
-            yahtzeeFrom.Closed += (s, args) => this.Close(); 
-            yahtzeeFrom.Show();
-        }
 
-        private void RemoveText(object sender, EventArgs e)
-        {
-            if (((TextBox) sender).Text == "Enter name...") 
+            //Check if the list contains player names and start the game is true.
+            if (playerNames.Any())
             {
-                ((TextBox) sender).Text = "";
-                ((TextBox)sender).ForeColor = SystemColors.WindowText;
+                YahtzeeFrom yahtzeeFrom = new YahtzeeFrom(new Game(playerNames));
+                this.Hide();
+                yahtzeeFrom.Closed += (s, args) => this.Close(); 
+                yahtzeeFrom.Show();
             }
         }
 
+        /// <summary>Fired then the TextBox gains focus. Removes the 'Enter name...' text from the TextBox.</summary>
+        /// <param name="sender">the clicked TextBox</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void RemoveText(object sender, EventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (textBox.Text == Constants.EnterNameText) 
+            {
+                textBox.Text = "";
+                textBox.ForeColor = SystemColors.WindowText;
+            }
+        }
+
+        /// <summary>Fired then the TextBox loses focus. Adds the 'Enter name...' text to the TextBox when the TextBox is empty.</summary>
+        /// <param name="sender"></param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void AddText(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(((TextBox)sender).Text))
+            TextBox textBox = (TextBox)sender;
+            if (string.IsNullOrWhiteSpace(textBox.Text))
             {
-                ((TextBox)sender).Text = "Enter name...";
-                ((TextBox)sender).ForeColor = SystemColors.WindowFrame;
+                textBox.Text = Constants.EnterNameText;
+                textBox.ForeColor = SystemColors.WindowFrame;
             }
         }
     }

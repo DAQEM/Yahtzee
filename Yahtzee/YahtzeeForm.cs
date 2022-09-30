@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Windows.Forms;
-using Yahtzee;
 using Yahtzee.events;
 
 namespace Yahtzee
@@ -13,15 +9,21 @@ namespace Yahtzee
         public readonly Game Game;
         public readonly Random SynchronizedRandom = new Random();
         
+        /// <summary>Creates a new YahtzeeForm</summary>
+        /// <param name="game">The game containing the payers playing the game.</param>
         public YahtzeeFrom(Game game)
         {
-            this.Game = game;
-            this.Game.YFrom = this;
+            Game = game;
+            Game.YahtzeeFrom = this;
             InitializeComponent();
             SetPlayerNames();
             DisposeUnusedLabels();
+            
+            //Set first turn for Player 1
+            Game.CurrentTurn = new Turn(Game.Players[0], this);
         }
 
+        /// <summary>Print the player names to the top of the points board.</summary>
         private void SetPlayerNames()
         {
             //Loop though all players
@@ -37,6 +39,7 @@ namespace Yahtzee
             
         }
 
+        /// <summary>Disposes all of the unused labels of the players who are not playing.</summary>
         private void DisposeUnusedLabels()
         {
             //Loop through all unused players
@@ -50,16 +53,25 @@ namespace Yahtzee
             }
         }
 
+        /// <summary>Passed the event to a dedicated class.</summary>
+        /// <param name="sender">The clicked label.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void labelPoints_Click(object sender, EventArgs e)
         {
-            SelectPointsEvent.labelPoints_Click(sender, e);
+            SelectPointsEvent.labelPoints_Click(sender, e, this);
         }
 
+        /// <summary>Passed the event to a dedicated class.</summary>
+        /// <param name="sender">The clicked button.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void buttonRollDice_Click(object sender, EventArgs e)
         {
             RollDiceEvent.ButtonRollDiceClick(sender, e, this);
         }
 
+        /// <summary>Passed the event to a dedicated class.</summary>
+        /// <param name="sender">The clicked die label.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         public void dice_Click(object sender, EventArgs e)
         {
             SelectDiceEvent.dice_Click(sender, e, this);

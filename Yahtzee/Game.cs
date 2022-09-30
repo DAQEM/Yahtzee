@@ -1,54 +1,89 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace Yahtzee
 {
     public class Game
     {
-        public YahtzeeFrom YFrom;
+        public YahtzeeFrom YahtzeeFrom;
         public readonly List<Player> Players = new List<Player>();
         public Turn CurrentTurn;
         
+        /// <summary>Creates a new game for 1 to 4 players max.</summary>
+        /// <param name="playerNames">A list of all of the names of the <see cref="Players"/> playing the game.</param>
         public Game(List<string> playerNames)
         {
-            //Loop though all new players and add to Players List
+            //Loop though all new players and add to players list.
             foreach (string playerName in playerNames)
             {
                 AddPlayer(playerName);
             }
-            
-            //Set first turn for Player 1
-            this.CurrentTurn = new Turn(Players[0], Constants.BeginRollNumber);
         }
 
+        /// <summary>Add player to <see cref="Players"/>.</summary>
+        /// <param name="playerName">The name of the player.</param>
         private void AddPlayer(string playerName)
         {
             Players.Add(new Player(playerName));
         }
 
+        /// <summary>Gets a player based on a player number. Example: 1 is the fist player in the <see cref="Players"/> list.</summary>
+        /// <param name="playerNumber"></param>
+        /// <returns></returns>
         public Player GetPlayer(int playerNumber)
         {
             return Players[playerNumber - 1];
         }
 
+        /// <summary>Gets the player paying the next turn.</summary>
+        /// <returns>An instance of the player playing the next game.</returns>
         private Player GetNextPlayer()
         {
-            int currentPlayerNumber = Players.FindIndex(player => player.Equals(CurrentTurn.Player)) + 1;
+            int currentPlayerNumber = GetCurrentPlayerNumber();
             return currentPlayerNumber == Players.Count ? GetPlayer(1) : GetPlayer(currentPlayerNumber + 1);
         }
         
-        public void NextTurn()
+        /// <summary>Start the next turn for the next player.</summary>
+        public void NextTurn(YahtzeeFrom yahtzeeFrom)
         {
             Player nextPlayer = GetNextPlayer();
             SetIsPlayingText(nextPlayer);
-            CurrentTurn = new Turn(nextPlayer, Constants.BeginRollNumber);
+            Control rollsLeftLabel = yahtzeeFrom.Controls.Find("labelRollsLeft", true)[0];
+            if (rollsLeftLabel != null)
+            {
+                rollsLeftLabel.Text = "3 rolls left.";
+            }
+            //Remove all dice on the table from the screen.
+            foreach (Die die in CurrentTurn.TurnTable.DiceDictionary.Values)
+            {
+                die.DisposeFromScreen();
+            }
+            
+            //Remove all dice in the hand from the screen.
+            foreach (Die die in CurrentTurn.TurnHand.DiceDictionary.Values)
+            {
+                die.DisposeFromScreen();
+            }
+
+            CurrentTurn = new Turn(nextPlayer, YahtzeeFrom);
         }
 
+        /// <summary>Prints a text on the top of the screen to tell who is playing the turn.</summary>
+        /// <param name="player">The player playing the turn.</param>
         public void SetIsPlayingText(Player player)
         {
-            Label isPlayingLabel = (Label) YFrom.Controls.Find("labelPlayerPlaying", true)[0];
-            isPlayingLabel.Text = player.Name + " is playing";
+            Label isPlayingLabel = (Label) YahtzeeFrom.Controls.Find("labelPlayerPlaying", true)[0];
+            if (isPlayingLabel != null)
+            {
+                isPlayingLabel.Text = player.Name + " is playing";
+            }
+        }
+
+        /// <summary>Gets the player number of the player playing the current turn.</summary>
+        /// <returns>The player number of the player playing the current turn.</returns>
+        public int GetCurrentPlayerNumber()
+        {
+            return Players.FindIndex(player => player.Equals(CurrentTurn.Player)) + 1;
         }
     }
 }

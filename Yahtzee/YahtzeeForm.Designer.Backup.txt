@@ -1036,7 +1036,7 @@ namespace Yahtzee
             this.labelRollsLeft.Name = "labelRollsLeft";
             this.labelRollsLeft.Size = new System.Drawing.Size(481, 18);
             this.labelRollsLeft.TabIndex = 87;
-            this.labelRollsLeft.Text = "3 Rolls left";
+            this.labelRollsLeft.Text = "3 rolls left";
             this.labelRollsLeft.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelTable

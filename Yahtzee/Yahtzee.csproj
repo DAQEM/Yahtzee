@@ -47,6 +47,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Constants.cs" />
+        <Compile Include="DieCollector.cs" />
         <Compile Include="events\RollDiceEvent.cs" />
         <Compile Include="events\SelectDiceEvent.cs" />
         <Compile Include="events\SelectPointsEvent.cs" />
