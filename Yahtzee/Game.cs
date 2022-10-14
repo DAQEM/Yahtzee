@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Yahtzee
@@ -48,10 +49,10 @@ namespace Yahtzee
         {
             Player nextPlayer = GetNextPlayer();
             SetIsPlayingText(nextPlayer);
-            Control rollsLeftLabel = yahtzeeFrom.Controls.Find("labelRollsLeft", true)[0];
-            if (rollsLeftLabel != null)
+            Control[] rollsLeftLabels = yahtzeeFrom.Controls.Find("labelRollsLeft", true);
+            if (rollsLeftLabels.Any())
             {
-                rollsLeftLabel.Text = "3 rolls left.";
+                rollsLeftLabels[0].Text = "3 rolls left.";
             }
             //Remove all dice on the table from the screen.
             foreach (Die die in CurrentTurn.TurnTable.DiceDictionary.Values)
@@ -72,10 +73,10 @@ namespace Yahtzee
         /// <param name="player">The player playing the turn.</param>
         public void SetIsPlayingText(Player player)
         {
-            Label isPlayingLabel = (Label) YahtzeeFrom.Controls.Find("labelPlayerPlaying", true)[0];
-            if (isPlayingLabel != null)
+            Control[] isPlayingLabels = YahtzeeFrom.Controls.Find("labelPlayerPlaying", true);
+            if (isPlayingLabels.Any())
             {
-                isPlayingLabel.Text = player.Name + " is playing";
+                isPlayingLabels[0].Text = player.Name + " is playing";
             }
         }
 

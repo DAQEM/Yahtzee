@@ -38,9 +38,9 @@ namespace Yahtzee.events
 
                 //Set rolls left on screen.
                 Label rollsLeftLabel = (Label) yahtzeeFrom.Controls.Find("labelRollsLeft", true)[0];
-                int rollsLeftNumber = currentTurn.RollNumber == 0 ? 3 :
-                    currentTurn.RollNumber == 1 ? 2 :
-                    currentTurn.RollNumber == 2 ? 1 : 0;
+                int rollsLeftNumber = currentTurn.RollNumber == 0 ? Constants.LastRollNumber :
+                    currentTurn.RollNumber == 1 ? Constants.Roll2 :
+                    currentTurn.RollNumber == 2 ? Constants.Roll1 : Constants.NoRolls;
                 rollsLeftLabel.Text = rollsLeftNumber + " rolls left";
 
                 PointsCalculator.CalculatePoints(new PointsCalculator(currentTurn));

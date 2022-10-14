@@ -4,6 +4,9 @@
     {
         public const int MaxPlayers = 4;
         public const int LastRollNumber = 3;
+        public const int Roll2 = 2;
+        public const int Roll1 = 1;
+        public const int NoRolls = 0;
         public const int MaxDice = 5;
         public const int TableY = 203;
         public const int HandY = 322;
